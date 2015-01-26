@@ -1,7 +1,8 @@
 var keys = require("keys"),
     isNullOrUndefined = require("is_null_or_undefined"),
     fastBindThis = require("fast_bind_this"),
-    isArrayLike = require("is_array_like");
+    isObjectLike = require("is_object_like"),
+    isLength = require("is_length");
 
 
 function someArray(array, callback) {
@@ -34,5 +35,5 @@ function someObject(object, callback) {
 
 module.exports = function some(object, callback, thisArg) {
     callback = isNullOrUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 2);
-    return isArrayLike(object) ? someArray(object, callback) : someObject(object, callback);
+    return (isObjectLike(object) && isLength(object.length)) ? someArray(object, callback) : someObject(object, callback);
 };
