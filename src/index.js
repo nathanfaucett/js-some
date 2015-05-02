@@ -4,6 +4,15 @@ var keys = require("keys"),
     isArrayLike = require("is_array_like");
 
 
+
+module.exports = some;
+
+
+function some(object, callback, thisArg) {
+    callback = isNullOrUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 2);
+    return isArrayLike(object) ? someArray(object, callback) : someObject(object, callback);
+}
+
 function someArray(array, callback) {
     var i = array.length;
 
@@ -31,8 +40,3 @@ function someObject(object, callback) {
 
     return false;
 }
-
-module.exports = function some(object, callback, thisArg) {
-    callback = isNullOrUndefined(thisArg) ? callback : fastBindThis(callback, thisArg, 2);
-    return isArrayLike(object) ? someArray(object, callback) : someObject(object, callback);
-};
